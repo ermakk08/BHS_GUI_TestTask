@@ -1,0 +1,17 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:AvaloniaApplication3.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplication3.Views.RectangleEditor"
+             x:DataType="models:RectangleModel">
+    <StackPanel>
+        <TextBlock Text="Ширина"/>
+        <NumericUpDown Value="{Binding Width}" Minimum="0" Maximum="700" Increment="25"/>
+        <TextBlock Text="Высота"/>
+        <NumericUpDown Value="{Binding Height}" Minimum="0" Maximum="700" Increment="25"/>
+        <TextBlock Text="Поворот"/>
+        <NumericUpDown Value="{Binding Rotation}" Minimum="0" Maximum="360" Increment="15"/>
+    </StackPanel>
+</UserControl>
