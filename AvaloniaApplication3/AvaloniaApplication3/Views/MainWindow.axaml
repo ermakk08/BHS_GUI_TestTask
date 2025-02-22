@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaApplication3.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:AvaloniaApplication3.Views"
+        xmlns:models="clr-namespace:AvaloniaApplication3.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaApplication3.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaApplication3">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <ComboBox ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Content="Добавить прямоугольник" Command="{Binding AddRectangleCommand}"/>
+            <Button Content="Добавить окружность" Command="{Binding AddCircleCommand}"/>
+
+            <ContentControl Content="{Binding SelectedShape}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type models:ShapeModel}">
+                        <views:ShapeEditor/>
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+            
+            <ContentControl Content="{Binding SelectedShape}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type models:RectangleModel}">
+                        <views:RectangleEditor/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type models:CircleModel}">
+                        <views:CircleEditor/>
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </StackPanel>
+
+        <Canvas Grid.Column="1">
+            <ContentControl Content="{Binding SelectedShape}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="{x:Type models:RectangleModel}">
+                        <Canvas Width="{Binding Width}" Height="{Binding Height}" x:Name="RectangleCanvas">
+                            <Grid Width="{Binding Width, ElementName=RectangleCanvas}" Height="{Binding Height, ElementName=RectangleCanvas}">
+                                <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}"/>
+                                <Label Content="{Binding Text}" Foreground="{Binding TextColor}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                            <Canvas.RenderTransform>
+                                <RotateTransform Angle="{Binding Rotation}"/>
+                            </Canvas.RenderTransform>
+                        </Canvas>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type models:CircleModel}">
+                        <Canvas Width="{Binding Width}" Height="{Binding Height}" x:Name="EllipseCanvas">
+                            <Grid Width="{Binding Width, ElementName=EllipseCanvas}" Height="{Binding Height, ElementName=EllipseCanvas}">
+                                <Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}"/>
+                                <Label Content="{Binding Text}" Foreground="{Binding TextColor}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Canvas>
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </Canvas>
+    </Grid>
+</Window>
