@@ -17,15 +17,6 @@
 - Неатомарная операция `_currentNumber++` в многопоточной среде.
 - Прямое присваивание в словарь без потокобезопасных операций.
 
-**Решение:**
-```csharp
-public void RegisterPassenger(Person p)
-{
-    int num = Interlocked.Increment(ref _currentNumber);
-    Passengers.TryAdd(num, p);
-}
-```
-
 **Обоснование:**
 - `Interlocked.Increment` гарантирует атомарность инкремента.
 - `ConcurrentDictionary.TryAdd()` потокобезопасен.
@@ -41,17 +32,8 @@ public static string GetAllPassengersNames()
 
 **Решение:**
 - Убрать `static` из сигнатуры метода.
-- Добавить параметр для передачи коллекции:
+- Добавить параметр для передачи коллекции.
 
-```csharp
-public string GetAllPassengersNames()
-{
-    var sb = new StringBuilder();
-    foreach (var passenger in Passengers.Values)
-        sb.Append(passenger.FirstName);
-    return sb.ToString();
-}
-```
 
 ### 3. Управление блокировками (CheckCoordinate)
 **Проблема:**
@@ -127,15 +109,7 @@ public void ChangeCaptain(string fn, string ln, string doc)
 ```
 
 **Решение:**
-- Удалить параметр или добавить валидацию:
-```csharp
-public void ChangeCaptain(string fn, string ln, string passportId)
-{
-    if (!Captain.PassportId.Equals(passportId))
-        throw new InvalidOperationException("Invalid document");
-    // ...
-}
-```
+- Удалить параметр или добавить валидацию.
 
 ### 7. Опасность async void
 **Проблема:**
